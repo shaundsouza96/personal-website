@@ -17,6 +17,29 @@ git checkout hte-interactive
 git pull
 ```
 
+## First-time setup
+
+The site uses Next.js 16, React 19, and TypeScript.
+
+```bash
+npm install
+```
+
+## Run locally
+
+```bash
+npm run dev
+```
+
+Then open `http://localhost:3000` in a browser.
+
+## Validate before pushing
+
+```bash
+npm run typecheck
+npm run build
+```
+
 ## Save work
 
 ```bash
