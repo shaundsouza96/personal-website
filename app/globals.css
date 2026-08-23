@@ -5,6 +5,7 @@
   --muted: #66645f;
   --border: #d9d8d2;
   --panel: #ffffff;
+  --soft: #efefe9;
 }
 
 * {
@@ -31,11 +32,13 @@ select {
 
 .shell {
   min-height: 100vh;
-  padding: 7rem 1.5rem;
+  padding: 7rem 1.5rem 10rem;
 }
 
-.hero {
-  width: min(780px, 100%);
+.hero,
+.lessonMap,
+.workflow {
+  width: min(920px, 100%);
   margin: 0 auto;
 }
 
@@ -48,9 +51,16 @@ select {
   text-transform: uppercase;
 }
 
+h1,
+h2,
+h3,
+p {
+  text-wrap: pretty;
+}
+
 h1 {
   margin: 0;
-  max-width: 760px;
+  max-width: 850px;
   font-family: Georgia, "Times New Roman", serif;
   font-size: clamp(2.8rem, 7vw, 5.8rem);
   font-weight: 500;
@@ -58,8 +68,18 @@ h1 {
   line-height: 0.98;
 }
 
+h2 {
+  margin: 0;
+  max-width: 760px;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(2rem, 4.5vw, 3.5rem);
+  font-weight: 500;
+  letter-spacing: -0.035em;
+  line-height: 1.05;
+}
+
 .lede {
-  max-width: 620px;
+  max-width: 680px;
   margin: 2rem 0 0;
   color: var(--muted);
   font-family: Georgia, "Times New Roman", serif;
@@ -67,43 +87,155 @@ h1 {
   line-height: 1.55;
 }
 
-.statusCard {
-  display: flex;
+.principle {
+  display: grid;
+  grid-template-columns: 120px 1fr;
   gap: 1rem;
-  align-items: flex-start;
   margin-top: 4rem;
-  padding: 1.25rem 1.4rem;
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  background: var(--panel);
+  padding: 1.5rem 0;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
 }
 
-.statusCard strong {
-  display: block;
-  margin-bottom: 0.35rem;
+.principle span {
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 
-.statusCard p {
+.principle strong {
+  max-width: 700px;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(1.25rem, 2.3vw, 1.7rem);
+  font-weight: 500;
+  line-height: 1.45;
+}
+
+.lessonMap,
+.workflow {
+  margin-top: 9rem;
+}
+
+.sectionIntro {
+  max-width: 720px;
+}
+
+.sectionIntro > p:last-child {
+  margin: 1.5rem 0 0;
+  color: var(--muted);
+  font-size: 1.05rem;
+  line-height: 1.7;
+}
+
+.sectionList {
+  margin-top: 3rem;
+  border-top: 1px solid var(--border);
+}
+
+.lessonSection {
+  display: grid;
+  grid-template-columns: 64px minmax(0, 1fr) auto;
+  gap: 1.5rem;
+  align-items: start;
+  padding: 1.75rem 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.sectionNumber {
+  color: var(--muted);
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 1rem;
+}
+
+.lessonSection h3 {
   margin: 0;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 1.35rem;
+  font-weight: 500;
+  line-height: 1.25;
+}
+
+.lessonSection p {
+  max-width: 650px;
+  margin: 0.65rem 0 0;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+.buildTag {
+  white-space: nowrap;
+  padding: 0.42rem 0.65rem;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  color: var(--muted);
+  background: var(--panel);
+  font-size: 0.75rem;
+}
+
+.workflow ol {
+  margin: 3rem 0 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: workflow;
+}
+
+.workflow li {
+  counter-increment: workflow;
+  display: grid;
+  grid-template-columns: 44px minmax(0, 1fr) minmax(220px, 0.9fr);
+  gap: 1rem;
+  align-items: baseline;
+  padding: 1.25rem 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.workflow li::before {
+  content: counter(workflow, decimal-leading-zero);
+  color: var(--muted);
+  font-family: Georgia, "Times New Roman", serif;
+}
+
+.workflow strong {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 1.15rem;
+  font-weight: 500;
+}
+
+.workflow span {
   color: var(--muted);
   line-height: 1.5;
 }
 
-.statusDot {
-  flex: 0 0 auto;
-  width: 0.7rem;
-  height: 0.7rem;
-  margin-top: 0.3rem;
-  border-radius: 999px;
-  background: currentColor;
-}
-
-@media (max-width: 640px) {
+@media (max-width: 760px) {
   .shell {
     padding-top: 4rem;
   }
 
-  .statusCard {
-    margin-top: 3rem;
+  .principle {
+    grid-template-columns: 1fr;
+  }
+
+  .lessonMap,
+  .workflow {
+    margin-top: 6rem;
+  }
+
+  .lessonSection {
+    grid-template-columns: 44px 1fr;
+  }
+
+  .buildTag {
+    grid-column: 2;
+    justify-self: start;
+  }
+
+  .workflow li {
+    grid-template-columns: 36px 1fr;
+  }
+
+  .workflow span {
+    grid-column: 2;
   }
 }
