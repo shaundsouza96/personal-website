@@ -6,6 +6,9 @@
   --border: #d9d8d2;
   --panel: #ffffff;
   --soft: #efefe9;
+  --accent: #5a67a8;
+  --font-sans: "DM Sans", Arial, Helvetica, sans-serif;
+  --font-mono: "DM Mono", "Courier New", monospace;
 }
 
 * {
@@ -20,7 +23,9 @@ body {
   margin: 0;
   color: var(--foreground);
   background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans);
+  font-size: 17px;
+  -webkit-font-smoothing: antialiased;
 }
 
 button,
@@ -30,9 +35,11 @@ select {
   font: inherit;
 }
 
+/* ── Shell ─────────────────────────────────────────────────── */
+
 .shell {
   min-height: 100vh;
-  padding: 7rem 1.5rem 10rem;
+  padding: 7rem 1.5rem 12rem;
 }
 
 .hero,
@@ -42,14 +49,18 @@ select {
   margin: 0 auto;
 }
 
+/* ── Eyebrow ────────────────────────────────────────────────── */
+
 .eyebrow {
   margin: 0 0 1.5rem;
   color: var(--muted);
-  font-size: 0.8rem;
-  font-weight: 700;
-  letter-spacing: 0.12em;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
 }
+
+/* ── Type ───────────────────────────────────────────────────── */
 
 h1,
 h2,
@@ -87,6 +98,8 @@ h2 {
   line-height: 1.55;
 }
 
+/* ── Hero principle block ───────────────────────────────────── */
+
 .principle {
   display: grid;
   grid-template-columns: 120px 1fr;
@@ -99,10 +112,11 @@ h2 {
 
 .principle span {
   color: var(--muted);
-  font-size: 0.78rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
+  padding-top: 0.25rem;
 }
 
 .principle strong {
@@ -112,6 +126,8 @@ h2 {
   font-weight: 500;
   line-height: 1.45;
 }
+
+/* ── Lesson map & workflow sections ─────────────────────────── */
 
 .lessonMap,
 .workflow {
@@ -134,45 +150,74 @@ h2 {
   border-top: 1px solid var(--border);
 }
 
+/* ── Section rows ───────────────────────────────────────────── */
+
 .lessonSection {
   display: grid;
-  grid-template-columns: 64px minmax(0, 1fr) auto;
-  gap: 1.5rem;
+  grid-template-columns: 72px minmax(0, 1fr);
+  gap: 2rem;
   align-items: start;
-  padding: 1.75rem 0;
+  padding: 2.25rem 0;
   border-bottom: 1px solid var(--border);
+  transition: background 0.15s ease;
 }
 
+.lessonSection:hover {
+  background: var(--soft);
+  margin: 0 -1.5rem;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+}
+
+/* Decorative large section number */
 .sectionNumber {
-  color: var(--muted);
   font-family: Georgia, "Times New Roman", serif;
-  font-size: 1rem;
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-weight: 400;
+  line-height: 1;
+  color: var(--border);
+  letter-spacing: -0.04em;
+  padding-top: 0.1rem;
+  user-select: none;
 }
 
 .lessonSection h3 {
   margin: 0;
   font-family: Georgia, "Times New Roman", serif;
-  font-size: 1.35rem;
+  font-size: 1.4rem;
   font-weight: 500;
   line-height: 1.25;
 }
 
 .lessonSection p {
   max-width: 650px;
-  margin: 0.65rem 0 0;
+  margin: 0.75rem 0 0;
   color: var(--muted);
-  line-height: 1.6;
+  line-height: 1.65;
+  font-size: 1rem;
 }
 
+/* Hide the stale buildTag — content is live now */
 .buildTag {
-  white-space: nowrap;
-  padding: 0.42rem 0.65rem;
-  border: 1px solid var(--border);
-  border-radius: 999px;
-  color: var(--muted);
-  background: var(--panel);
-  font-size: 0.75rem;
+  display: none;
 }
+
+/* ── Scroll entry animation ─────────────────────────────────── */
+
+@media (prefers-reduced-motion: no-preference) {
+  .lessonSection {
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity 0.45s ease, transform 0.45s ease, background 0.15s ease;
+  }
+
+  .lessonSection.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ── Workflow section ───────────────────────────────────────── */
 
 .workflow ol {
   margin: 3rem 0 0;
@@ -208,6 +253,130 @@ h2 {
   line-height: 1.5;
 }
 
+/* ── Visualization containers ───────────────────────────────── */
+
+.sectionViz {
+  margin-top: 2rem;
+  padding: 1.75rem 2rem;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+
+.cateChartWrap {
+  display: flex;
+  gap: 2rem;
+  align-items: flex-start;
+}
+
+.cateChartWrap svg {
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+/* ── Section content components ─────────────────────────────── */
+
+.explanationList {
+  margin: 0.75rem 0 0;
+  padding-left: 1.2rem;
+  color: var(--muted);
+  line-height: 1.65;
+}
+
+.explanationList li {
+  margin-top: 0.35rem;
+}
+
+.exampleBlock {
+  margin-top: 1.25rem;
+  padding: 1.25rem 1.5rem;
+  background: var(--soft);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+
+.exampleLabel {
+  display: block;
+  margin-bottom: 0.75rem;
+  color: var(--muted);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.exampleRows {
+  border-top: 1px solid var(--border);
+}
+
+.exampleRow {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.45rem 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.95rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.exampleRow span:first-child {
+  color: var(--foreground);
+}
+
+.exampleRow span:last-child {
+  color: var(--foreground);
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
+}
+
+.exampleBlock > p {
+  margin: 0.85rem 0 0 !important;
+  font-size: 0.9rem !important;
+  color: var(--muted) !important;
+}
+
+.takeaway {
+  display: grid;
+  grid-template-columns: 120px 1fr;
+  gap: 1rem;
+  margin-top: 1.75rem;
+  padding: 1.25rem 0;
+  border-top: 1px solid var(--border);
+}
+
+.takeaway > span {
+  color: var(--muted);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding-top: 0.25rem;
+}
+
+.takeaway > p {
+  margin: 0 !important;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 1.05rem !important;
+  line-height: 1.55 !important;
+  color: var(--foreground) !important;
+}
+
+.lessonSection blockquote {
+  margin: 1.25rem 0 0;
+  padding: 0.85rem 0 0.85rem 1.25rem;
+  border-left: 2px solid var(--foreground);
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 1.05rem;
+  font-style: italic;
+  line-height: 1.6;
+  color: var(--foreground);
+}
+
+.lessonSection blockquote strong {
+  font-style: normal;
+}
+
+/* ── Responsive ─────────────────────────────────────────────── */
+
 @media (max-width: 760px) {
   .shell {
     padding-top: 4rem;
@@ -223,12 +392,22 @@ h2 {
   }
 
   .lessonSection {
-    grid-template-columns: 44px 1fr;
+    grid-template-columns: 48px 1fr;
+    gap: 1.25rem;
   }
 
-  .buildTag {
-    grid-column: 2;
-    justify-self: start;
+  .lessonSection:hover {
+    margin: 0 -1rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  .sectionNumber {
+    font-size: 1.75rem;
+  }
+
+  .sectionViz {
+    padding: 1.25rem 1rem;
   }
 
   .workflow li {
@@ -238,4 +417,273 @@ h2 {
   .workflow span {
     grid-column: 2;
   }
+
+  .takeaway {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ── Slideshow layout ───────────────────────────────────────── */
+
+.slideshow {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  background: var(--background);
+}
+
+.slide {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  overflow-y: auto;
+  padding: 4rem 2rem 5rem;
+}
+
+.slideInner {
+  width: min(1100px, 100%);
+  margin: 0 auto;
+}
+
+/* Override scroll-based section styles when inside slideshow */
+.slideshow .lessonSection {
+  opacity: 1 !important;
+  transform: none !important;
+  border-bottom: none;
+}
+
+.slideshow .lessonSection:hover {
+  background: transparent;
+  margin: 0;
+  padding: 2.25rem 0;
+}
+
+.slideshow .workflow {
+  margin-top: 0;
+}
+
+/* ── Navigation bar ─────────────────────────────────────────── */
+
+.navBar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 2rem;
+  background: var(--background);
+  border-top: 1px solid var(--border);
+  z-index: 10;
+}
+
+.slideCounter {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--muted);
+  min-width: 60px;
+}
+
+.navDots {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.navDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  background: var(--border);
+  transition: background 0.15s ease, width 0.15s ease;
+  flex-shrink: 0;
+}
+
+.navDot--active {
+  background: var(--foreground);
+  width: 20px;
+  border-radius: 3px;
+}
+
+.navArrows {
+  display: flex;
+  gap: 8px;
+  min-width: 60px;
+  justify-content: flex-end;
+}
+
+.navArrow {
+  background: none;
+  border: 1px solid var(--border);
+  color: var(--foreground);
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s ease;
+}
+
+.navArrow:hover {
+  background: var(--soft);
+}
+
+.navArrow:disabled {
+  opacity: 0.3;
+  cursor: default;
+}
+
+@media (max-width: 760px) {
+  .slide {
+    padding: 2.5rem 1.25rem 5rem;
+  }
+
+  .navBar {
+    padding: 0 1.25rem;
+  }
+}
+
+/* ── Concept slide layout ───────────────────────────────────── */
+
+.highlight {
+  color: var(--accent);
+}
+
+.conceptSlide {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 1.5rem;
+  width: 100%;
+}
+
+.conceptSlide h2 {
+  font-size: clamp(2.8rem, 6vw, 5rem);
+  letter-spacing: -0.04em;
+  line-height: 1.0;
+  margin: 0;
+  max-width: 100%;
+}
+
+.conceptSubtitle {
+  max-width: 620px;
+  color: var(--muted);
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(1.1rem, 2vw, 1.4rem);
+  line-height: 1.5;
+  margin: 0;
+}
+
+.conceptViz {
+  width: 100%;
+  padding: 1.75rem 2rem;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+
+/* ── Interaction calculation table ──────────────────────────── */
+
+.calcWrap {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  text-align: left;
+}
+
+.calcCoeffs {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.calcCoeff {
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
+  padding: 0.3rem 0.75rem;
+  background: var(--soft);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  color: var(--foreground);
+}
+
+.calcGrid {
+  display: grid;
+  grid-template-columns: 100px 1fr 1fr;
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.calcCorner {
+  background: var(--soft);
+}
+
+.calcColLabel {
+  background: var(--soft);
+  padding: 0.75rem 1rem;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-align: center;
+  line-height: 1.4;
+}
+
+.calcRowLabel {
+  background: var(--soft);
+  padding: 0.75rem 1rem;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 0.9rem;
+  color: var(--muted);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  line-height: 1.4;
+}
+
+.calcCell {
+  background: var(--panel);
+  padding: 1rem 1.25rem;
+}
+
+.calcSubst {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 0.95rem;
+  line-height: 1.7;
+  font-style: italic;
+}
+
+.calcCATEs {
+  display: flex;
+  gap: 2rem;
+  flex-wrap: wrap;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--border);
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 0.95rem;
+  font-style: italic;
+  line-height: 1.5;
+}
+
+.conceptNote {
+  max-width: 580px;
+  color: var(--muted);
+  font-size: 0.95rem;
+  line-height: 1.6;
+  text-align: center;
+  margin: 0;
 }
