@@ -13,6 +13,7 @@ import AuthorityFiguresViz from "../../components/AuthorityFiguresViz";
 import LightbulbCharacter from "../../components/LightbulbCharacter";
 import SwanSamplingGame from "../../components/SwanSamplingGame";
 import LightbulbTree from "../../components/LightbulbTree";
+import JohnstonPlotsGame from "../../components/JohnstonPlotsGame";
 
 function LightbulbO() {
   return (
@@ -39,7 +40,7 @@ function LightbulbO() {
   );
 }
 
-const TOTAL = 14;
+const TOTAL = 7;
 
 export default function HistoryOfTestsPage() {
   const [current, setCurrent] = useState(0);
@@ -129,247 +130,141 @@ export default function HistoryOfTestsPage() {
           )}
 
           {current === 2 && (
-            <div className="conceptSlide">
-              <p className="eyebrow">Know Your Craft &middot; Experimentation</p>
-              <h2>We turn to <span className="highlight">observation</span> and induction</h2>
-              <p className="conceptSubtitle">
-                Modern science began building general claims from repeated observations:{" "}
-                <em>I&rsquo;ve seen this happen many times, so perhaps it is generally true.</em>{" "}
-                Sample the swans below and see what conclusion you reach.
-              </p>
-              <div className="conceptViz">
-                <SwanSamplingGame />
+            <div style={{ display: "flex", gap: "2.5rem", alignItems: "center", width: "100%", position: "relative" }}>
+              <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: "1.25rem", textAlign: "left" }}>
+                <p className="conceptSubtitle" style={{ fontFamily: "var(--font-handwriting)", maxWidth: "none" }}>
+                  But the pointy hats can be{" "}
+                  <span className="highlight" style={{ fontWeight: 700, textTransform: "uppercase", fontSize: "clamp(1.65rem, 3vw, 2.1rem)", display: "block" }}>wrong.</span>
+                  <span style={{ fontSize: "clamp(1rem, 1.5vw, 1.2rem)" }}>(they don&rsquo;t always take it very well)</span>
+                </p>
+                <p className="conceptSubtitle" style={{ fontFamily: "var(--font-handwriting)", maxWidth: "none" }}>
+                  Soon enough, people find new ways of generating knowledge that{" "}
+                  <span className="highlight">challenge traditional sources of authority</span>.
+                </p>
+                <p className="conceptSubtitle" style={{ fontFamily: "var(--font-handwriting)", maxWidth: "none" }}>
+                  Like...
+                </p>
               </div>
-              <p className="conceptNote">
-                <strong>Observations are only a sample.</strong> The world can contain things you
-                haven&rsquo;t seen yet.
-              </p>
+              <div style={{ flexShrink: 0, width: "50%" }}>
+                <img src="/flat-earth.png" alt="A priest declaring the earth is flat while two people stand on a globe" style={{ width: "100%", height: "auto", display: "block" }} />
+              </div>
             </div>
           )}
 
           {current === 3 && (
-            <div className="conceptSlide">
-              <p className="eyebrow">Know Your Craft &middot; Experimentation</p>
-              <h2>Tests: a <span className="highlight">forgotten</span> struggle</h2>
-              <p className="conceptSubtitle">
-                Tests are so common today&mdash;pregnancy tests, COVID tests, A/B tests&mdash;that
-                we forget they are the product of decades of academic and practical struggle. Since
-                the 19th century, humans have searched for a rigorous method to evaluate what an
-                experiment actually tells us.
-              </p>
-              <blockquote className="slideBlockquote">
-                &ldquo;As yet, we do not possess any&hellip; system of mean results, though few
-                things would at present do more to clear up our ideas as to the precise influence
-                of this or that substance on the growth of plants.&rdquo;
-              </blockquote>
-              <p className="conceptNote">
-                James Johnston, 1849. From <em>Empire of Chance</em> (Gigerenzer et al.) &mdash;
-                statistical tests were first created to answer practical agricultural questions.{" "}
-                <strong>Outcomes vary even when you do nothing.</strong> A treated plot might
-                outperform another because of soil, weather, measurement, or plain chance.
-              </p>
+            <div style={{ display: "flex", gap: "2.5rem", alignItems: "center", width: "100%", position: "relative" }}>
+              <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: "1.25rem", textAlign: "left" }}>
+                <p className="conceptSubtitle" style={{ fontFamily: "var(--font-handwriting)", maxWidth: "none" }}>
+                  
+                  <span className="highlight" style={{ fontWeight: 700, textTransform: "uppercase", fontSize: "clamp(1.65rem, 3vw, 2.1rem)" }}>statistics</span>
+                  , which began as a tool of the state (which is where the term comes from). As governments grew larger and more complex, numbers offered a way to count its resources and other features of society.
+                </p>
+                <p className="conceptSubtitle" style={{ fontFamily: "var(--font-handwriting)", maxWidth: "none" }}>
+                  Early statisticians deliberately presented their work as objective and opinion-free. Their ambition was initially modest: collect and organize facts, rather than explain causes or make prections.
+                </p>
+                <p className="conceptSubtitle" style={{ fontFamily: "var(--font-handwriting)", maxWidth: "none" }}>
+                  But this commitment to &ldquo;letting the numbers speak&rdquo; had a more radical consequence. Empiricism through numbers could{" "}
+                  <span className="highlight">challenge traditional forms of authority</span>. Expertise no longer had to rest solely on the judgment of an authority. Rather claims could increasingly be checked against systematically collected evidence.
+                </p>
+              </div>
+              <div style={{ flexShrink: 0, width: "50%" }}>
+                <img src="/king-stats.png" alt="A king declaring his kingdom stretches as far as the eye can see, while a statistician with a tape measure says it is about 600 square meters" style={{ width: "100%", height: "auto", display: "block" }} />
+              </div>
             </div>
           )}
 
           {current === 4 && (
-            <div className="conceptSlide">
-              <p className="eyebrow">Know Your Craft &middot; Experimentation</p>
-              <h2>How much difference <span className="highlight">is enough</span>?</h2>
-              <p className="conceptSubtitle">
-                In 1849, James Johnston asked: how much of a difference in average yields between
-                treated and untreated plots must we see before we can conclude there is a real
-                effect? The chart below shows two groups of plots&mdash;but is the difference in
-                means real, or just natural variation?
-              </p>
-              <div className="conceptViz">
-                <VariationChart />
+            <div style={{ display: "flex", gap: "2.5rem", alignItems: "center", width: "100%", position: "relative" }}>
+              <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: "1.25rem", textAlign: "left" }}>
+                <p className="conceptSubtitle" style={{ fontFamily: "var(--font-handwriting)", maxWidth: "none" }}>
+                  Statistics could tell us <span className="highlight">what</span> was happening,
+                  but it still struggled to tell us whether one thing <em>caused</em> another.
+                  In 1849, the agricultural chemist James F. W. Johnston complained:
+                </p>
+                <blockquote className="slideBlockquote">
+                  &ldquo;As yet we do not possess any&hellip; system of mean results, though few
+                  things would at present do more to clear up our ideas as to the precise influence
+                  of this or that substance on the growth of plants.&rdquo;
+                </blockquote>
+                <p className="conceptSubtitle" style={{ fontFamily: "var(--font-handwriting)", maxWidth: "none", fontWeight: 700 }}>
+                  Or, more simply: does this sh*t actually work?
+                </p>
+                <p className="conceptSubtitle" style={{ fontFamily: "var(--font-handwriting)", maxWidth: "none" }}>
+                  Crop yields varied naturally, even across plots treated in exactly the same way.
+                  So a higher yield on a fertilized plot was not, by itself, evidence that the
+                  fertilizer worked. If the apparent improvement was small relative to the natural
+                  variation between plots, the difference could just as easily be noise rather than
+                  treatment effect.
+                </p>
               </div>
-              <p className="conceptNote">
-                &ldquo;As yet, we do not possess any&hellip; system of mean results.&rdquo; &mdash; James Johnston, 1849
-              </p>
+              <div style={{ flexShrink: 0, width: "40%" }}>
+                <img
+                  src="/johnston-fertilizer.png"
+                  alt="A market stall with a sign reading 'Questionable Sh*t', selling bags of fertilizer"
+                  style={{ width: "100%", height: "auto", display: "block" }}
+                />
+              </div>
             </div>
           )}
 
           {current === 5 && (
-            <div className="conceptSlide">
-              <p className="eyebrow">Know Your Craft &middot; Experimentation</p>
-              <h2>You must account for <span className="highlight">natural variation</span></h2>
-              <p className="conceptSubtitle">
-                Unlike physics, agricultural experiments could not control every factor. Temperature
-                and soil richness vary plot to plot. Johnston realized that to assess any
-                intervention, you must first understand how much the outcome varies on its own.
-                Without that baseline, a difference in averages means nothing.
+            <div style={{ display: "flex", flexDirection: "column", gap: "1.25rem", alignItems: "center", width: "100%" }}>
+              <p className="conceptSubtitle" style={{ fontFamily: "var(--font-handwriting)", textAlign: "center" }}>
+                Johnston&rsquo;s intuition was that the same treatment effect could look convincing
+                or meaningless depending on how much natural variation existed between plots.
+                Dial both up and down and watch his perspective on the treatment change.
               </p>
-              <div className="conceptViz">
-                <VariationChart />
+              <div style={{ width: "100%" }}>
+                <JohnstonPlotsGame />
               </div>
-              <p className="conceptNote">
-                The spread of dots within each group is natural variation. The question is whether
-                the gap between the means exceeds what chance alone would produce.
-              </p>
             </div>
           )}
 
           {current === 6 && (
-            <div className="conceptSlide">
-              <p className="eyebrow">Know Your Craft &middot; Experimentation</p>
-              <h2>Fisher built on <span className="highlight">Gosset</span></h2>
-              <p className="conceptSubtitle">
-                Ronald Fisher&rsquo;s theory of experimental design extended the work of William Sealy
-                Gosset&mdash;who wrote under the pseudonym &ldquo;Student.&rdquo; Gosset developed the
-                t-test for making inferences from small samples, a problem he faced as a brewer at
-                Guinness. Fisher took these ideas and built a systematic theory of experimental
-                design and statistical inference.
-              </p>
-              <div className="conceptViz">
-                <PredecessorsDiagram />
+            <div style={{ display: "flex", gap: "2.5rem", alignItems: "flex-start", width: "100%" }}>
+              <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: "1.25rem" }}>
+                <p className="conceptSubtitle" style={{ fontFamily: "var(--font-handwriting)", maxWidth: "none" }}>
+                  Ronald Fisher, the chief statistician at the Rothamsted agricultural experiment
+                  station, helped turn the messy variability of real-world experiments into a system
+                  for deciding whether a treatment actually worked.
+                </p>
+                <p className="conceptSubtitle" style={{ fontFamily: "var(--font-handwriting)", maxWidth: "none" }}>
+                  Instead of asking whether treated plots simply <em>looked</em> better, he compared
+                  the <span className="highlight">signal from the treatment</span> with the{" "}
+                  <span className="highlight">noise of natural variation</span>. He devised the
+                  significance test, which asked: if the treatment did nothing, how surprising would
+                  these results be?
+                </p>
+                <p className="conceptSubtitle" style={{ fontFamily: "var(--font-handwriting)", maxWidth: "none" }}>
+                  To separate treatment effects from natural variation, he combined three ideas:
+                </p>
+                <div style={{ display: "flex", flexDirection: "column", gap: "1.1rem" }}>
+                  <p className="conceptSubtitle" style={{ fontFamily: "var(--font-handwriting)", maxWidth: "none", margin: 0 }}>
+                    <strong>Replication:</strong> run the treatment on many plots, rather than
+                    relying on one treated plot. Repetition lets you estimate how much outcomes
+                    naturally vary and makes the average more precise.
+                  </p>
+                  <p className="conceptSubtitle" style={{ fontFamily: "var(--font-handwriting)", maxWidth: "none", margin: 0 }}>
+                    <strong>Blocking:</strong> compare like with like. If fertility changes as you
+                    move down a hill, pair plots at the same elevation and compare treatment
+                    vs. control within those pairs. This removes a known source of background
+                    variation.
+                  </p>
+                  <p className="conceptSubtitle" style={{ fontFamily: "var(--font-handwriting)", maxWidth: "none", margin: 0 }}>
+                    <strong>Randomization:</strong> randomly decide which plot in each pair gets
+                    the treatment, for example, with a coin flip. This prevents the experimenter,
+                    consciously or unconsciously, from assigning better plots to one condition and
+                    gives the subsequent significance test a firmer probabilistic basis.
+                  </p>
+                </div>
               </div>
-              <p className="conceptNote">
-                The t-test gave Fisher a foundation. What Fisher added was a principled way to
-                design experiments so that statistical inference would be valid.
-              </p>
-            </div>
-          )}
-
-          {current === 7 && (
-            <div className="conceptSlide">
-              <p className="eyebrow">Know Your Craft &middot; Experimentation</p>
-              <h2>Separating <span className="highlight">signal</span> from noise</h2>
-              <p className="conceptSubtitle">
-                Fisher&rsquo;s key innovation was ANOVA&mdash;Analysis of Variance. It decomposes
-                the total observed variation into two components: variation attributable to the
-                treatment, and variation due to random error. This makes it possible to ask whether
-                treatment differences are larger than what chance alone would produce.
-              </p>
-              <div className="conceptViz">
-                <AnovaDecompositionChart />
+              <div style={{ flexShrink: 0, width: "38%" }}>
+                <img
+                  src="/fisher-design-experiments.png"
+                  alt="The Design of Experiments by R. A. Fisher"
+                  style={{ width: "100%", height: "auto", display: "block" }}
+                />
               </div>
-              <p className="conceptNote">
-                If treatment variation dwarfs random error, the effect is unlikely to be a fluke.
-                ANOVA gives that comparison a precise probabilistic form.
-              </p>
-            </div>
-          )}
-
-          {current === 8 && (
-            <div className="conceptSlide">
-              <p className="eyebrow">Know Your Craft &middot; Experimentation</p>
-              <h2><span className="highlight">Replication</span>: measuring what you can&rsquo;t control</h2>
-              <p className="conceptSubtitle">
-                Apply each treatment to multiple independent experimental units. With only one
-                observation per group, you cannot distinguish a real effect from a fluke. With
-                many, you get an estimate of natural variability&mdash;and can compare treatment
-                effects against it. More replication means more precision.
-              </p>
-              <div className="conceptViz">
-                <ReplicationDiagram />
-              </div>
-              <p className="conceptNote">
-                The estimate of natural variability from replication is exactly what ANOVA uses
-                as its baseline when judging whether a treatment effect is real.
-              </p>
-            </div>
-          )}
-
-          {current === 9 && (
-            <div className="conceptSlide">
-              <p className="eyebrow">Know Your Craft &middot; Experimentation</p>
-              <h2><span className="highlight">Blocking</span>: removing known noise</h2>
-              <p className="conceptSubtitle">
-                Group experimental units that are similar on an important variable&mdash;say, soil
-                type or field location. Then compare treatments within those groups, not across them.
-                This removes the nuisance variation from the error term, making treatment comparisons
-                sharper.
-              </p>
-              <div className="conceptViz">
-                <BlockingDiagram />
-              </div>
-              <p className="conceptNote">
-                By comparing within blocks, you neutralize the confound. Only the treatment differs
-                within each block, so any difference is more clearly attributable to the treatment.
-              </p>
-            </div>
-          )}
-
-          {current === 10 && (
-            <div className="conceptSlide">
-              <p className="eyebrow">Know Your Craft &middot; Experimentation</p>
-              <h2><span className="highlight">Randomization</span>: Fisher&rsquo;s most distinctive contribution</h2>
-              <p className="conceptSubtitle">
-                Assign treatments to units by chance. This prevents uncontrolled factors from being
-                systematically associated with one treatment&mdash;protecting against bias. Crucially,
-                it also provides the probabilistic foundation for Fisher&rsquo;s significance tests.
-                Without randomization, those tests have no legs to stand on.
-              </p>
-              <div className="conceptViz">
-                <RandomizationDiagram />
-              </div>
-              <p className="conceptNote">
-                Without randomization, any observed difference might be explained by a lurking
-                variable. Chance makes that argument unavailable to the skeptic.
-              </p>
-            </div>
-          )}
-
-          {current === 11 && (
-            <div className="conceptSlide">
-              <p className="eyebrow">Know Your Craft &middot; Experimentation</p>
-              <h2>Every test answers <span className="highlight">two</span> questions</h2>
-              <p className="conceptSubtitle">
-                Statistical inference addresses two distinct questions: whether there is evidence
-                that the treatment makes a difference (significance testing), and how large that
-                difference is (estimation). Both matter&mdash;a tiny effect can be statistically
-                significant with a large enough sample.
-              </p>
-              <div className="conceptViz">
-                <TwoQuestionsViz />
-              </div>
-              <p className="conceptNote">
-                Significance tells you whether to take an effect seriously. Estimation tells you
-                whether to care about its size.
-              </p>
-            </div>
-          )}
-
-          {current === 12 && (
-            <div className="conceptSlide">
-              <p className="eyebrow">Know Your Craft &middot; Experimentation</p>
-              <h2>Fisher&rsquo;s <span className="highlight">answer</span></h2>
-              <p className="conceptSubtitle">
-                In the 1930s, Ronald Fisher formalized the answer. If there is truly no difference
-                between groups, repeated sampling produces a bell-shaped distribution of mean
-                differences centered at zero. Drag the slider to see how an observed difference
-                maps onto that distribution and what p-value it produces.
-              </p>
-              <div className="conceptViz">
-                <SamplingDistributionChart />
-              </div>
-              <p className="conceptNote">
-                The farther the observed difference from zero, the less likely it is explained by
-                chance. When p &lt; 0.05, we say the result is statistically significant.{" "}
-                <strong>But a significance test doesn&rsquo;t tell us whether a decision is correct.</strong>{" "}
-                A result can look significant by chance, and a real effect can fail to look significant.
-              </p>
-            </div>
-          )}
-
-          {current === 13 && (
-            <div className="conceptSlide">
-              <p className="eyebrow">Know Your Craft &middot; Experimentation</p>
-              <h2>A <span className="highlight">unified</span> framework</h2>
-              <p className="conceptSubtitle">
-                Fisher&rsquo;s lasting contribution was connecting experimental design,
-                randomization, and statistical inference into a single coherent system: design
-                the experiment so variation can be measured and controlled, then use probability
-                to judge whether remaining differences are plausibly due to chance.
-              </p>
-              <div className="conceptViz">
-                <FisherFrameworkDiagram />
-              </div>
-              <p className="conceptNote">
-                Before Fisher, these were separate concerns. After Fisher, they were a single method&mdash;
-                and the template for how we run experiments today.
-              </p>
             </div>
           )}
 
@@ -414,3 +309,4 @@ export default function HistoryOfTestsPage() {
     </div>
   );
 }
+
