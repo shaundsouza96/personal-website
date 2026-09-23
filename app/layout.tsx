@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { DM_Sans, DM_Mono } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
 
 const dmSans = DM_Sans({
@@ -15,6 +16,12 @@ const dmMono = DM_Mono({
   display: "swap",
 });
 
+const futuraHandwritten = localFont({
+  src: "../public/fonts/FuturaHandwritten.ttf",
+  variable: "--font-handwriting",
+  display: "swap",
+});
+
 export const metadata: Metadata = {
   title: "Shaun D'Souza | Product Data Science",
   description:
@@ -27,7 +34,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${dmSans.variable} ${dmMono.variable}`}>
+    <html lang="en" className={`${dmSans.variable} ${dmMono.variable} ${futuraHandwritten.variable}`}>
       <body>{children}</body>
     </html>
   );

@@ -11,6 +11,15 @@ export default function WritingPage() {
         <section className="writingSection">
           <p className="eyebrow">Know Your Craft · Experimentation</p>
           <div className="writingCards">
+            <Link href="/writing/history-of-tests" className="writingCard">
+              <p className="writingCardLabel">Essay</p>
+              <h2 className="writingCardTitle">The history of tests</h2>
+              <p className="writingCardDesc">
+                From Genesis to Fisher: how humans built a rigorous method for evaluating whether
+                an experiment reveals truth.
+              </p>
+              <span className="writingCardCta">Read &rarr;</span>
+            </Link>
             <Link href="/cates" className="writingCard">
               <p className="writingCardLabel">Interactive essay</p>
               <h2 className="writingCardTitle">Measuring conditional average treatment effects</h2>
