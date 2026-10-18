@@ -4,9 +4,6 @@ import VariationChart from "../../components/VariationChart";
 import SamplingDistributionChart from "../../components/SamplingDistributionChart";
 import PredecessorsDiagram from "../../components/PredecessorsDiagram";
 import AnovaDecompositionChart from "../../components/AnovaDecompositionChart";
-import ReplicationDiagram from "../../components/ReplicationDiagram";
-import BlockingDiagram from "../../components/BlockingDiagram";
-import RandomizationDiagram from "../../components/RandomizationDiagram";
 import TwoQuestionsViz from "../../components/TwoQuestionsViz";
 import FisherFrameworkDiagram from "../../components/FisherFrameworkDiagram";
 import AuthorityFiguresViz from "../../components/AuthorityFiguresViz";
@@ -14,6 +11,7 @@ import LightbulbCharacter from "../../components/LightbulbCharacter";
 import SwanSamplingGame from "../../components/SwanSamplingGame";
 import LightbulbTree from "../../components/LightbulbTree";
 import JohnstonPlotsGame from "../../components/JohnstonPlotsGame";
+import StepReveal from "../../components/StepReveal";
 
 function LightbulbO() {
   return (
@@ -40,17 +38,35 @@ function LightbulbO() {
   );
 }
 
-const TOTAL = 7;
+const TOTAL = 9;
+
+// Slides that build up in steps: slide index -> number of steps after the initial view
+const STEPS: Record<number, number> = { 7: 3 };
+
+type Position = { slide: number; step: number };
+
+function nextPosition({ slide, step }: Position): Position {
+  if (step < (STEPS[slide] ?? 0)) return { slide, step: step + 1 };
+  if (slide < TOTAL - 1) return { slide: slide + 1, step: 0 };
+  return { slide, step };
+}
+
+function prevPosition({ slide, step }: Position): Position {
+  if (step > 0) return { slide, step: step - 1 };
+  if (slide > 0) return { slide: slide - 1, step: STEPS[slide - 1] ?? 0 };
+  return { slide, step };
+}
 
 export default function HistoryOfTestsPage() {
-  const [current, setCurrent] = useState(0);
+  const [position, setPosition] = useState<Position>({ slide: 0, step: 0 });
+  const current = position.slide;
 
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
       if (e.key === "ArrowRight" || e.key === "ArrowDown") {
-        setCurrent((c) => Math.min(c + 1, TOTAL - 1));
+        setPosition(nextPosition);
       } else if (e.key === "ArrowLeft" || e.key === "ArrowUp") {
-        setCurrent((c) => Math.max(c - 1, 0));
+        setPosition(prevPosition);
       }
     };
     window.addEventListener("keydown", handler);
@@ -75,19 +91,6 @@ export default function HistoryOfTestsPage() {
           </div>
         ) : (
         <>
-        {current === 1 && (
-          <div style={{ position: "absolute", left: "2.5rem", top: "2.5rem", pointerEvents: "none", zIndex: 0 }}>
-            <svg viewBox="0 0 40 52" width={48} height={62} fill="none" aria-hidden="true">
-              <rect x={13} y={1} width={14} height={10} rx={2} fill="#555" stroke="#191919" strokeWidth={2} />
-              <line x1={13} y1={4} x2={27} y2={4} stroke="#191919" strokeWidth={1.5} />
-              <line x1={13} y1={7} x2={27} y2={7} stroke="#191919" strokeWidth={1.5} />
-              <circle cx={20} cy={28} r={16} fill="#FFE44D" stroke="#191919" strokeWidth={3} />
-              <path d="M11 40 Q20 50 29 40" fill="#FFE44D" stroke="#191919" strokeWidth={3} strokeLinecap="round" />
-              <path d="M16 22 Q18 27 16 33" stroke="#191919" strokeWidth={2} strokeLinecap="round" fill="none" />
-              <path d="M24 22 Q22 27 24 33" stroke="#191919" strokeWidth={2} strokeLinecap="round" fill="none" />
-            </svg>
-          </div>
-        )}
         <div className="slideInner">
 
           {current === 1 && (
@@ -133,7 +136,42 @@ export default function HistoryOfTestsPage() {
             <div style={{ display: "flex", gap: "2.5rem", alignItems: "center", width: "100%", position: "relative" }}>
               <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: "1.25rem", textAlign: "left" }}>
                 <p className="conceptSubtitle" style={{ fontFamily: "var(--font-handwriting)", maxWidth: "none" }}>
-                  But the pointy hats can be{" "}
+                  In fact, classical probability had no ambition beyond describing the behavior of these{" "}
+                  <span className="highlight" style={{ fontWeight: 700, textTransform: "uppercase", fontSize: "clamp(1.65rem, 3vw, 2.1rem)", display: "block" }}>&ldquo;reasonable men.&rdquo;</span>
+                  The field was meant to codify their intuitions, not overrule them. As Laplace put it:
+                </p>
+                <blockquote className="slideBlockquote">
+                  Probability is &ldquo;only good sense reduced to calculus.&rdquo;
+                </blockquote>
+                <p className="conceptSubtitle" style={{ fontFamily: "var(--font-handwriting)", maxWidth: "none" }}>
+                  And when the theory failed to match the intuitions of reasonable men, it was often{" "}
+                  <span className="highlight">the theory that changed</span>.
+                </p>
+                <p className="conceptSubtitle" style={{ fontFamily: "var(--font-handwriting)", maxWidth: "none" }}>
+                  The smallpox inoculation debate shows how descriptive that ideal could be. In 1760,
+                  Daniel Bernoulli used mortality data and probability theory to argue that inoculation
+                  increased life expectancy. D&rsquo;Alembert&mdash;who actually supported
+                  inoculation&mdash;objected that Bernoulli&rsquo;s mathematics ignored how reasonable
+                  people really thought about risk: many preferred a larger danger in the distant future
+                  to a smaller, immediate risk from inoculation.
+                </p>
+                <p className="conceptSubtitle" style={{ fontFamily: "var(--font-handwriting)", maxWidth: "none" }}>
+                  His point was not that inoculation was foolish, but that probability had overstepped
+                  if it stopped describing reasonable judgment and started{" "}
+                  <span className="highlight">telling reasonable people how they ought to decide</span>.
+                </p>
+              </div>
+              <div style={{ flexShrink: 0, width: "40%" }}>
+                <img src="/reasonable-men.png" alt="A stick figure with a notepad lifts a judge's wig, saying: I'm just checking if there's a model in here." style={{ width: "100%", height: "auto", display: "block" }} />
+              </div>
+            </div>
+          )}
+
+          {current === 3 && (
+            <div style={{ display: "flex", gap: "2.5rem", alignItems: "center", width: "100%", position: "relative" }}>
+              <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: "1.25rem", textAlign: "left" }}>
+                <p className="conceptSubtitle" style={{ fontFamily: "var(--font-handwriting)", maxWidth: "none" }}>
+                  But reasonable men can be{" "}
                   <span className="highlight" style={{ fontWeight: 700, textTransform: "uppercase", fontSize: "clamp(1.65rem, 3vw, 2.1rem)", display: "block" }}>wrong.</span>
                   <span style={{ fontSize: "clamp(1rem, 1.5vw, 1.2rem)" }}>(they don&rsquo;t always take it very well)</span>
                 </p>
@@ -151,7 +189,7 @@ export default function HistoryOfTestsPage() {
             </div>
           )}
 
-          {current === 3 && (
+          {current === 4 && (
             <div style={{ display: "flex", gap: "2.5rem", alignItems: "center", width: "100%", position: "relative" }}>
               <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: "1.25rem", textAlign: "left" }}>
                 <p className="conceptSubtitle" style={{ fontFamily: "var(--font-handwriting)", maxWidth: "none" }}>
@@ -173,12 +211,11 @@ export default function HistoryOfTestsPage() {
             </div>
           )}
 
-          {current === 4 && (
+          {current === 5 && (
             <div style={{ display: "flex", gap: "2.5rem", alignItems: "center", width: "100%", position: "relative" }}>
               <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: "1.25rem", textAlign: "left" }}>
                 <p className="conceptSubtitle" style={{ fontFamily: "var(--font-handwriting)", maxWidth: "none" }}>
-                  Statistics could tell us <span className="highlight">what</span> was happening,
-                  but it still struggled to tell us whether one thing <em>caused</em> another.
+                But collecting evidence was only half the challenge. Numbers could describe what happened, but they couldn't necessarily explain why it happened or whether an apparent difference meant anything at all.
                   In 1849, the agricultural chemist James F. W. Johnston complained:
                 </p>
                 <blockquote className="slideBlockquote">
@@ -186,8 +223,15 @@ export default function HistoryOfTestsPage() {
                   things would at present do more to clear up our ideas as to the precise influence
                   of this or that substance on the growth of plants.&rdquo;
                 </blockquote>
-                <p className="conceptSubtitle" style={{ fontFamily: "var(--font-handwriting)", maxWidth: "none", fontWeight: 700 }}>
-                  Or, more simply: does this sh*t actually work?
+                <p className="conceptSubtitle" style={{ fontFamily: "var(--font-handwriting)", maxWidth: "none" }}>
+                  Or, more simply:
+                  <br />
+                  <span className="highlight" style={{ fontWeight: 700, textTransform: "uppercase", fontSize: "clamp(1.65rem, 3vw, 2.1rem)" }}>does this sh*t actually work?</span>
+                </p>
+                <p className="conceptSubtitle" style={{ fontFamily: "var(--font-handwriting)", maxWidth: "none" }}>
+                  In particular, he wanted to understand how to measure treatment effects in
+                  agricultural settings where environmental conditions like sunshine or fertility
+                  could not be perfectly controlled.
                 </p>
                 <p className="conceptSubtitle" style={{ fontFamily: "var(--font-handwriting)", maxWidth: "none" }}>
                   Crop yields varied naturally, even across plots treated in exactly the same way.
@@ -207,7 +251,7 @@ export default function HistoryOfTestsPage() {
             </div>
           )}
 
-          {current === 5 && (
+          {current === 6 && (
             <div style={{ display: "flex", flexDirection: "column", gap: "1.25rem", alignItems: "center", width: "100%" }}>
               <p className="conceptSubtitle" style={{ fontFamily: "var(--font-handwriting)", textAlign: "center" }}>
                 Johnston&rsquo;s intuition was that the same treatment effect could look convincing
@@ -220,51 +264,86 @@ export default function HistoryOfTestsPage() {
             </div>
           )}
 
-          {current === 6 && (
-            <div style={{ display: "flex", gap: "2.5rem", alignItems: "flex-start", width: "100%" }}>
-              <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: "1.25rem" }}>
+          {current === 7 && (
+            <div style={{ display: "flex", flexDirection: "column", gap: "1.25rem", textAlign: "left" }}>
                 <p className="conceptSubtitle" style={{ fontFamily: "var(--font-handwriting)", maxWidth: "none" }}>
-                  Ronald Fisher, the chief statistician at the Rothamsted agricultural experiment
-                  station, helped turn the messy variability of real-world experiments into a system
-                  for deciding whether a treatment actually worked.
+                  Enter Ronald Fisher, the chief statistician at the Rothamsted agricultural experiment
+                  station. Building on the work of Karl Pearson and William Gosset, he created a 
+                  coherent methodology for scientific experimentation.
                 </p>
                 <p className="conceptSubtitle" style={{ fontFamily: "var(--font-handwriting)", maxWidth: "none" }}>
-                  Instead of asking whether treated plots simply <em>looked</em> better, he compared
-                  the <span className="highlight">signal from the treatment</span> with the{" "}
-                  <span className="highlight">noise of natural variation</span>. He devised the
-                  significance test, which asked: if the treatment did nothing, how surprising would
-                  these results be?
+                  In his landmark manual, Statistical Methods for Research Workers (1925), he codified a system 
+                  to answer the question: if the treatment did nothing, how surprising would these results be?
                 </p>
                 <p className="conceptSubtitle" style={{ fontFamily: "var(--font-handwriting)", maxWidth: "none" }}>
-                  To separate treatment effects from natural variation, he combined three ideas:
+                  To separate treatment effects from natural variation, he combined three ideas
                 </p>
-                <div style={{ display: "flex", flexDirection: "column", gap: "1.1rem" }}>
-                  <p className="conceptSubtitle" style={{ fontFamily: "var(--font-handwriting)", maxWidth: "none", margin: 0 }}>
-                    <strong>Replication:</strong> run the treatment on many plots, rather than
-                    relying on one treated plot. Repetition lets you estimate how much outcomes
-                    naturally vary and makes the average more precise.
-                  </p>
-                  <p className="conceptSubtitle" style={{ fontFamily: "var(--font-handwriting)", maxWidth: "none", margin: 0 }}>
-                    <strong>Blocking:</strong> compare like with like. If fertility changes as you
-                    move down a hill, pair plots at the same elevation and compare treatment
-                    vs. control within those pairs. This removes a known source of background
-                    variation.
-                  </p>
-                  <p className="conceptSubtitle" style={{ fontFamily: "var(--font-handwriting)", maxWidth: "none", margin: 0 }}>
-                    <strong>Randomization:</strong> randomly decide which plot in each pair gets
-                    the treatment, for example, with a coin flip. This prevents the experimenter,
-                    consciously or unconsciously, from assigning better plots to one condition and
-                    gives the subsequent significance test a firmer probabilistic basis.
-                  </p>
-                </div>
-              </div>
-              <div style={{ flexShrink: 0, width: "38%" }}>
-                <img
-                  src="/fisher-design-experiments.png"
-                  alt="The Design of Experiments by R. A. Fisher"
-                  style={{ width: "100%", height: "auto", display: "block" }}
-                />
-              </div>
+              <StepReveal
+                step={position.step}
+                onSelect={(step) => setPosition({ slide: 7, step })}
+                items={[
+                  {
+                    title: "Replication",
+                    body: (
+                      <>
+                        Run the treatment on many plots, rather than relying on one treated plot.
+                        Repetition lets you estimate how much outcomes naturally vary and makes the
+                        average more precise.
+                      </>
+                    ),
+                    image: {
+                      src: "/replication.png",
+                      alt: "A farmer's single plot multiplying into six plots, then twenty plots",
+                    },
+                  },
+                  {
+                    title: "Blocking",
+                    body: (
+                      <>
+                        Compare like with like. If fertility changes as you move down a hill, pair
+                        plots at the same elevation and compare treatment vs. control within those
+                        pairs. This removes a known source of background variation.
+                      </>
+                    ),
+                    image: {
+                      src: "/blocking.png",
+                      alt: "Three blocks, each pairing a control plot with a treated plot and comparing within the block",
+                    },
+                  },
+                  {
+                    title: "Randomization",
+                    body: (
+                      <>
+                        Randomly decide which plot in each pair gets the treatment, for example, with
+                        a coin flip. This prevents the experimenter, consciously or unconsciously, from
+                        assigning better plots to one condition and gives the subsequent significance
+                        test a firmer probabilistic basis.
+                      </>
+                    ),
+                    image: {
+                      src: "/randomization.png",
+                      alt: "A coin flip in each block decides which plot gets the treatment",
+                    },
+                  },
+                ]}
+              />
+            </div>
+          )}
+
+          {current === 8 && (
+            <div style={{ display: "flex", flexDirection: "column", gap: "1.25rem", textAlign: "left" }}>
+                <p className="conceptSubtitle" style={{ fontFamily: "var(--font-handwriting)", maxWidth: "none" }}>
+                While he was certainly interested in improving agricultural yields, he had loftier ambitions.
+                Writing as fascism was spreading across Europe, he argued that human freedom required experiment.
+                </p>
+                <blockquote className="slideBlockquote">
+                  &ldquo;The liberation of the human intellect must, however, remain incomplete so long
+                  as it is free only to work out the consequences of a prescribed body of dogmatic data,
+                  and is denied the access to unsuspected truths, which only direct observation can
+                  give... The arts of experimental design and of the valid interpretation of experimental
+                  results, in so far as they can be technically perfected, must constitute the core of
+                  this claim to the exercise of full intellectual liberty. &rdquo;
+                </blockquote>
             </div>
           )}
 
@@ -282,7 +361,7 @@ export default function HistoryOfTestsPage() {
             <button
               key={i}
               className={`navDot${current === i ? " navDot--active" : ""}`}
-              onClick={() => setCurrent(i)}
+              onClick={() => setPosition({ slide: i, step: 0 })}
               aria-label={`Slide ${i + 1}`}
             />
           ))}
@@ -290,7 +369,7 @@ export default function HistoryOfTestsPage() {
         <div className="navArrows">
           <button
             className="navArrow"
-            onClick={() => setCurrent((c) => Math.max(c - 1, 0))}
+            onClick={() => setPosition(prevPosition)}
             disabled={current === 0}
             aria-label="Previous slide"
           >
@@ -298,7 +377,7 @@ export default function HistoryOfTestsPage() {
           </button>
           <button
             className="navArrow"
-            onClick={() => setCurrent((c) => Math.min(c + 1, TOTAL - 1))}
+            onClick={() => setPosition(nextPosition)}
             disabled={current === TOTAL - 1}
             aria-label="Next slide"
           >
