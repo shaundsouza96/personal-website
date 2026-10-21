@@ -46,10 +46,15 @@ function computePValue(control: number[], treated: number[]): number {
   return 2 * normalCDF(-Math.abs(t));
 }
 
-function getReaction(p: number): { text: string; level: 0 | 1 | 2 | 3 } {
-  if (p > 0.5) return { text: "Nah, this sh*t don't work.", level: 0 };
-  if (p > 0.05) return { text: "Hard to say…", level: 1 };
-  return { text: "This sh*t works!", level: 3 };
+// The farmer's rule of thumb: under a 5% chance of a gap this large by luck alone, it works
+const THRESHOLD = 0.05;
+
+function getReaction(p: number): string {
+  return p < THRESHOLD ? "Under 5%? This sh*t works!" : "Over 5%? Nah, this sh*t don't work.";
+}
+
+function formatPValue(p: number): string {
+  return p < 0.001 ? "p < 0.1%" : `p = ${(p * 100).toFixed(1)}%`;
 }
 
 function yieldToHeight(y: number): number {
@@ -125,7 +130,7 @@ export default function JohnstonPlotsGame() {
   const controlYields = baseNoise[0].map((n) => BASE_YIELD + n * variation);
   const treatedYields = baseNoise[1].map((n) => BASE_YIELD + effect + n * variation);
   const pValue = computePValue(controlYields, treatedYields);
-  const { text: reactionText } = getReaction(pValue);
+  const reactionText = getReaction(pValue);
 
   const controlMean = controlYields.reduce((s, x) => s + x, 0) / N;
   const treatedMean = treatedYields.reduce((s, x) => s + x, 0) / N;
@@ -234,6 +239,22 @@ export default function JohnstonPlotsGame() {
               </text>
             </>
           )}
+
+          {/* p-value readout */}
+          <text
+            x={gapCenterX}
+            y={22}
+            textAnchor="middle"
+            fontSize={14}
+            fontFamily="var(--font-mono)"
+            fontWeight={pValue < THRESHOLD ? 700 : 400}
+            fill={pValue < THRESHOLD ? "var(--accent)" : "var(--foreground)"}
+          >
+            {formatPValue(pValue)}
+          </text>
+          <text x={gapCenterX} y={38} textAnchor="middle" fontSize={10} fill="var(--muted)">
+            cutoff: 5%
+          </text>
 
           {/* Group labels */}
           <text x={156} y={325} textAnchor="middle" fontSize={12} fill="var(--muted)">Control</text>

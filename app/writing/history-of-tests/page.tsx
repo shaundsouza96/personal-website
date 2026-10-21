@@ -41,7 +41,7 @@ function LightbulbO() {
 const TOTAL = 9;
 
 // Slides that build up in steps: slide index -> number of steps after the initial view
-const STEPS: Record<number, number> = { 7: 3 };
+const STEPS: Record<number, number> = { 6: 3 };
 
 type Position = { slide: number; step: number };
 
@@ -176,7 +176,7 @@ export default function HistoryOfTestsPage() {
                   <span style={{ fontSize: "clamp(1rem, 1.5vw, 1.2rem)" }}>(they don&rsquo;t always take it very well)</span>
                 </p>
                 <p className="conceptSubtitle" style={{ fontFamily: "var(--font-handwriting)", maxWidth: "none" }}>
-                  Soon enough, people find new ways of generating knowledge that{" "}
+                  And soon enough, people find new ways of generating knowledge that{" "}
                   <span className="highlight">challenge traditional sources of authority</span>.
                 </p>
                 <p className="conceptSubtitle" style={{ fontFamily: "var(--font-handwriting)", maxWidth: "none" }}>
@@ -238,7 +238,7 @@ export default function HistoryOfTestsPage() {
                   So a higher yield on a fertilized plot was not, by itself, evidence that the
                   fertilizer worked. If the apparent improvement was small relative to the natural
                   variation between plots, the difference could just as easily be noise rather than
-                  treatment effect.
+                  anything to do with the fertilizer.
                 </p>
               </div>
               <div style={{ flexShrink: 0, width: "40%" }}>
@@ -252,24 +252,11 @@ export default function HistoryOfTestsPage() {
           )}
 
           {current === 6 && (
-            <div style={{ display: "flex", flexDirection: "column", gap: "1.25rem", alignItems: "center", width: "100%" }}>
-              <p className="conceptSubtitle" style={{ fontFamily: "var(--font-handwriting)", textAlign: "center" }}>
-                Johnston&rsquo;s intuition was that the same treatment effect could look convincing
-                or meaningless depending on how much natural variation existed between plots.
-                Dial both up and down and watch his perspective on the treatment change.
-              </p>
-              <div style={{ width: "100%" }}>
-                <JohnstonPlotsGame />
-              </div>
-            </div>
-          )}
-
-          {current === 7 && (
             <div style={{ display: "flex", flexDirection: "column", gap: "1.25rem", textAlign: "left" }}>
                 <p className="conceptSubtitle" style={{ fontFamily: "var(--font-handwriting)", maxWidth: "none" }}>
                   Enter Ronald Fisher, the chief statistician at the Rothamsted agricultural experiment
                   station. Building on the work of Karl Pearson and William Gosset, he created a 
-                  coherent methodology for scientific experimentation.
+                  coherent methodology for scientific experimentation called significance testing.
                 </p>
                 <p className="conceptSubtitle" style={{ fontFamily: "var(--font-handwriting)", maxWidth: "none" }}>
                   In his landmark manual, Statistical Methods for Research Workers (1925), he codified a system 
@@ -280,7 +267,7 @@ export default function HistoryOfTestsPage() {
                 </p>
               <StepReveal
                 step={position.step}
-                onSelect={(step) => setPosition({ slide: 7, step })}
+                onSelect={(step) => setPosition({ slide: 6, step })}
                 items={[
                   {
                     title: "Replication",
@@ -327,6 +314,18 @@ export default function HistoryOfTestsPage() {
                   },
                 ]}
               />
+            </div>
+          )}
+
+          {current === 7 && (
+            <div style={{ display: "flex", flexDirection: "column", gap: "1.25rem", alignItems: "center", width: "100%" }}>
+              <p className="conceptSubtitle" style={{ fontFamily: "var(--font-handwriting)", textAlign: "center" }}>
+                In doing so, he was able to measure the weight of evidence against the hypothesis that the treatment had no effect i.e if the fertilizer did nothing,
+                how often would we see a difference in samples at least this large? He suggested that if the answer was less than 5%, then the experimenter could conclude that the treatment had a significant result on the outcome 
+              </p>
+              <div style={{ width: "100%" }}>
+                <JohnstonPlotsGame />
+              </div>
             </div>
           )}
 
