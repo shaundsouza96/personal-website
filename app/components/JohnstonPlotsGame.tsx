@@ -25,12 +25,64 @@ function sampleNormal(n: number): number[] {
   return out;
 }
 
-function normalCDF(z: number): number {
-  const t = 1 / (1 + 0.2316419 * Math.abs(z));
-  const d = 0.3989423 * Math.exp((-z * z) / 2);
-  const p =
-    d * t * (0.3193815 + t * (-0.3565638 + t * (1.7814779 + t * (-1.821256 + t * 1.3302744))));
-  return z > 0 ? 1 - p : p;
+function logGamma(x: number): number {
+  // Lanczos approximation
+  const c = [
+    76.18009172947146, -86.50532032941677, 24.01409824083091,
+    -1.231739572450155, 0.1208650973866179e-2, -0.5395239384953e-5,
+  ];
+  let y = x;
+  const tmp = x + 5.5 - (x + 0.5) * Math.log(x + 5.5);
+  let ser = 1.000000000190015;
+  for (const ci of c) ser += ci / ++y;
+  return -tmp + Math.log((2.5066282746310005 * ser) / x);
+}
+
+// Continued fraction for the regularized incomplete beta function
+function betaCF(a: number, b: number, x: number): number {
+  const EPS = 3e-12;
+  const FPMIN = 1e-300;
+  let c = 1;
+  let d = 1 - ((a + b) * x) / (a + 1);
+  if (Math.abs(d) < FPMIN) d = FPMIN;
+  d = 1 / d;
+  let h = d;
+  for (let m = 1; m <= 200; m++) {
+    const m2 = 2 * m;
+    let aa = (m * (b - m) * x) / ((a + m2 - 1) * (a + m2));
+    d = 1 + aa * d;
+    if (Math.abs(d) < FPMIN) d = FPMIN;
+    c = 1 + aa / c;
+    if (Math.abs(c) < FPMIN) c = FPMIN;
+    d = 1 / d;
+    h *= d * c;
+    aa = (-(a + m) * (a + b + m) * x) / ((a + m2) * (a + m2 + 1));
+    d = 1 + aa * d;
+    if (Math.abs(d) < FPMIN) d = FPMIN;
+    c = 1 + aa / c;
+    if (Math.abs(c) < FPMIN) c = FPMIN;
+    d = 1 / d;
+    const del = d * c;
+    h *= del;
+    if (Math.abs(del - 1) < EPS) break;
+  }
+  return h;
+}
+
+function regularizedBeta(a: number, b: number, x: number): number {
+  if (x <= 0) return 0;
+  if (x >= 1) return 1;
+  const front = Math.exp(
+    logGamma(a + b) - logGamma(a) - logGamma(b) + a * Math.log(x) + b * Math.log(1 - x)
+  );
+  return x < (a + 1) / (a + b + 2)
+    ? (front * betaCF(a, b, x)) / a
+    : 1 - (front * betaCF(b, a, 1 - x)) / b;
+}
+
+// Two-sided p-value for Student's t with df degrees of freedom
+function tTestPValue(t: number, df: number): number {
+  return regularizedBeta(df / 2, 0.5, df / (df + t * t));
 }
 
 function computePValue(control: number[], treated: number[]): number {
@@ -43,13 +95,18 @@ function computePValue(control: number[], treated: number[]): number {
   const se = Math.sqrt((2 * pooledVar) / n);
   if (se < 1e-10) return 1;
   const t = (meanT - meanC) / se;
-  return 2 * normalCDF(-Math.abs(t));
+  return tTestPValue(t, 2 * n - 2);
 }
 
-function getReaction(p: number): { text: string; level: 0 | 1 | 2 | 3 } {
-  if (p > 0.5) return { text: "Nah, this sh*t don't work.", level: 0 };
-  if (p > 0.05) return { text: "Hard to say…", level: 1 };
-  return { text: "This sh*t works!", level: 3 };
+// The farmer's rule of thumb: under a 5% chance of a gap this large by luck alone, it works
+const THRESHOLD = 0.05;
+
+function getReaction(p: number): string {
+  return p < THRESHOLD ? "Under 5%? This sh*t works!" : "Over 5%? Nah, this sh*t don't work.";
+}
+
+function formatPValue(p: number): string {
+  return p < 0.001 ? "p < 0.1%" : `p = ${(p * 100).toFixed(1)}%`;
 }
 
 function yieldToHeight(y: number): number {
@@ -125,7 +182,7 @@ export default function JohnstonPlotsGame() {
   const controlYields = baseNoise[0].map((n) => BASE_YIELD + n * variation);
   const treatedYields = baseNoise[1].map((n) => BASE_YIELD + effect + n * variation);
   const pValue = computePValue(controlYields, treatedYields);
-  const { text: reactionText } = getReaction(pValue);
+  const reactionText = getReaction(pValue);
 
   const controlMean = controlYields.reduce((s, x) => s + x, 0) / N;
   const treatedMean = treatedYields.reduce((s, x) => s + x, 0) / N;
@@ -234,6 +291,22 @@ export default function JohnstonPlotsGame() {
               </text>
             </>
           )}
+
+          {/* p-value readout */}
+          <text
+            x={gapCenterX}
+            y={22}
+            textAnchor="middle"
+            fontSize={14}
+            fontFamily="var(--font-mono)"
+            fontWeight={pValue < THRESHOLD ? 700 : 400}
+            fill={pValue < THRESHOLD ? "var(--accent)" : "var(--foreground)"}
+          >
+            {formatPValue(pValue)}
+          </text>
+          <text x={gapCenterX} y={38} textAnchor="middle" fontSize={10} fill="var(--muted)">
+            cutoff: 5%
+          </text>
 
           {/* Group labels */}
           <text x={156} y={325} textAnchor="middle" fontSize={12} fill="var(--muted)">Control</text>
