@@ -30,6 +30,20 @@ export default function WritingPage() {
             </Link>
           </div>
         </section>
+
+        <section className="writingSection">
+          <p className="eyebrow">Personal</p>
+          <div className="writingCards">
+            <Link href="/writing/the-kind-of-work-i-want" className="writingCard">
+              <p className="writingCardLabel">Essay</p>
+              <h2 className="writingCardTitle">The Kind of Work I Want</h2>
+              <p className="writingCardDesc">
+                What I look for in my next role, from how I learn to the teams and products I want to work on.
+              </p>
+              <span className="writingCardCta">Read →</span>
+            </Link>
+          </div>
+        </section>
       </div>
     </main>
   );
